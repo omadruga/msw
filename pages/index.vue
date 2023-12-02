@@ -4,8 +4,9 @@
 
     <div class="w-2/3 p-4 shadow-md">
       <div v-for="transaction in transactions">
-        <div class="flex justify-between">
-          <div class="text-center self-end w-2">
+        <div class="flex justify-start">
+          <!-- date -->
+          <div class="text-center self-end min-w-fit pr-4">
             <span class="uppercase leading-3 text-sm text-gray-400 block"
               >{{ $dayjs(transaction.date).format("MMM") }}
             </span>
@@ -14,6 +15,7 @@
             </span>
           </div>
 
+          <!-- description -->
           <div class="w-96">
             <span class="text-xl leading-7 block"
               >{{ transaction.description }}
@@ -26,7 +28,8 @@
             </span>
           </div>
 
-          <div class="flex self-center text-end">
+          <!-- amount -->
+          <div class="flex self-center text-end ml-auto">
             <span
               class="text-xl"
               :class="`${
