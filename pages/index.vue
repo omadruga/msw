@@ -8,7 +8,7 @@
           <!-- date -->
           <div class="text-center self-end min-w-fit pr-4">
             <span class="uppercase leading-3 text-sm text-gray-400 block"
-              >{{ $dayjs(transaction.date).format("MMM") }}
+              >{{ $dayjs(transaction.date).add(1, "day").format("MMM") }}
             </span>
             <span class="text-2xl text-gray-400">
               {{ $dayjs(transaction.date).add(1, "day").format("DD") }}
