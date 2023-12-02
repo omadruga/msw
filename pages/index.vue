@@ -41,7 +41,7 @@
             <span
               class="text-xl"
               :class="`${
-                transaction.account.personId == 1
+                transaction.account?.personId == 1
                   ? 'text-green-500'
                   : 'text-red-400'
               }`"

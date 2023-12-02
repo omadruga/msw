@@ -124,11 +124,6 @@ const columns = [
     sortable: true,
   },
   {
-    key: "person",
-    label: "Comprador",
-    sortable: true,
-  },
-  {
     key: "date",
     label: "Data",
     sortable: true,
