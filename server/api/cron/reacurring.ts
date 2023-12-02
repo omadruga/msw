@@ -1,7 +1,7 @@
 import { processReacurring } from "~/server/data/transactions";
 
 export default defineEventHandler(async (event: any) => {
-  processReacurring();
+  await processReacurring();
   return {
     status: "OK",
   };
