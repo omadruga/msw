@@ -29,5 +29,7 @@ export default defineEventHandler(async (event: any) => {
   if (id) {
     return updateTransaction(id, data, account, person);
   }
+
+  data.currentParcel = 1;
   return createTransaction(data, account, person);
 });

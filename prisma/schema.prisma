@@ -44,6 +44,7 @@ model Transaction {
 
   reacurring Boolean @default(false)
   parcels Int?
+  currentParcel Int?
 
   payoff Boolean @default(false)
 

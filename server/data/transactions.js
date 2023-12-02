@@ -1,6 +1,5 @@
 import prisma from "./prisma";
 import { Prisma } from "@prisma/client";
-import { useDayjs } from "#dayjs";
 
 export async function getTransactions(where) {
   const include = {
@@ -168,4 +167,56 @@ export async function updatePayoff(id, data) {
       },
     });
   }
+}
+
+export async function processReacurring() {
+  const today = new Date();
+  const oneMonthEarlier = new Date(
+    today.getFullYear(),
+    today.getMonth() - 1,
+    1
+  );
+
+  const transactions = await prisma.Transaction.findMany({
+    where: {
+      reacurring: true,
+      parcels: {
+        gt: 0,
+      },
+      currentParcel: {
+        lt: prisma.Transaction.fields.parcels,
+      },
+      // last month only
+      date: {
+        gte: oneMonthEarlier,
+      },
+    },
+  });
+
+  let newTs = [];
+  transactions.forEach((t) => {
+    let newT = {};
+    newT.accountId = t.accountId;
+    newT.buyerId = t.buyerId;
+    newT.amount = t.amount;
+    newT.description = t.description;
+    newT.reacurring = t.reacurring;
+    newT.parcels = t.parcels;
+    newT.currentParcel = t.currentParcel > 0 ? t.currentParcel + 1 : null;
+    newT.date = addMonths(t.date, 1);
+    newTs.push(newT);
+  });
+
+  await prisma.Transaction.createMany({
+    data: newTs,
+  });
+}
+
+function addMonths(date, months) {
+  var d = date.getDate();
+  date.setMonth(date.getMonth() + +months);
+  if (date.getDate() != d) {
+    date.setDate(0);
+  }
+  return date;
 }

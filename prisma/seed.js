@@ -179,6 +179,7 @@ async function seed() {
         description: "Aliexpres Teclado",
         reacurring: true,
         parcels: 2,
+        currentParcel: 1,
       },
       {
         accountId: 6,
@@ -252,6 +253,7 @@ async function seed() {
         description: "Boticário presentes",
         reacurring: true,
         parcels: 3,
+        currentParcel: 1,
       },
       {
         accountId: 7,
@@ -261,6 +263,7 @@ async function seed() {
         description: "Seguro 2008",
         reacurring: true,
         parcels: 8,
+        currentParcel: 1,
       },
       {
         accountId: 7,
@@ -307,6 +310,7 @@ async function seed() {
         description: "Renner",
         reacurring: true,
         parcels: 2,
+        currentParcel: 1,
       },
       {
         accountId: 8,
@@ -346,6 +350,7 @@ async function seed() {
         description: "Netshoes",
         reacurring: true,
         parcels: 4,
+        currentParcel: 1,
       },
       {
         accountId: 8,
@@ -390,6 +395,7 @@ async function seed() {
         description: "Fotos",
         reacurring: true,
         parcels: 6,
+        currentParcel: 1,
       },
       {
         accountId: 8,
@@ -427,6 +433,7 @@ async function seed() {
         description: "StudioZ presente pais",
         reacurring: true,
         parcels: 7,
+        currentParcel: 1,
       },
       {
         accountId: 8,
@@ -436,6 +443,7 @@ async function seed() {
         description: "Executive Guest",
         reacurring: true,
         parcels: 9,
+        currentParcel: 1,
       },
       {
         accountId: 8,
@@ -531,6 +539,7 @@ async function seed() {
         description: "Imporium roupas",
         reacurring: true,
         parcels: 8,
+        currentParcel: 1,
       },
       {
         accountId: 9,
@@ -540,6 +549,7 @@ async function seed() {
         description: "Amaro roupas",
         reacurring: true,
         parcels: 3,
+        currentParcel: 1,
       },
       {
         accountId: 9,
@@ -605,6 +615,7 @@ async function seed() {
         description: "Dafiti",
         reacurring: true,
         parcels: 3,
+        currentParcel: 1,
       },
       {
         accountId: 9,
@@ -658,6 +669,7 @@ async function seed() {
         description: "Carrefour Pneus",
         reacurring: true,
         parcels: 7,
+        currentParcel: 1,
       },
       {
         accountId: 10,
@@ -667,6 +679,7 @@ async function seed() {
         description: "TV nova",
         reacurring: true,
         parcels: 7,
+        currentParcel: 1,
       },
 
       // AMZ
@@ -678,6 +691,7 @@ async function seed() {
         description: "Processador e Fone gu",
         reacurring: true,
         parcels: 8,
+        currentParcel: 1,
       },
     ],
   });

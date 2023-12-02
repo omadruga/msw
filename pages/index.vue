@@ -20,7 +20,15 @@
             <span class="text-xl leading-7 block"
               >{{ transaction.description }}
               <UBadge v-if="transaction.reacurring" variant="outline">
-                <UIcon name="i-heroicons-outline-refresh" dynamic />
+                <UIcon
+                  name="i-heroicons-outline-refresh"
+                  class="mr-1"
+                  dynamic
+                />
+                <span v-if="transaction.parcels > 0">
+                  {{ transaction.currentParcel }} / {{ transaction.parcels }}
+                </span>
+                <span v-else> infinito </span>
               </UBadge>
             </span>
             <span class="text-sm text-gray-400">
