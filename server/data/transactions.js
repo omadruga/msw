@@ -178,12 +178,22 @@ export async function processReacurring() {
   const transactions = await prisma.Transaction.findMany({
     where: {
       reacurring: true,
-      parcels: {
-        gt: 0,
-      },
-      currentParcel: {
-        lt: prisma.Transaction.fields.parcels,
-      },
+      OR: [
+        {
+          parcels: {
+            gt: 0,
+          },
+          currentParcel: {
+            lt: prisma.Transaction.fields.parcels,
+          },
+        },
+        {
+          parcels: {
+            lt: 0,
+          },
+        },
+      ],
+
       // last month only
       date: {
         gte: oneMonthEarlier,
