@@ -1,6 +1,8 @@
 import { processReacurring } from "~/server/data/transactions";
 
-export default function eventHandler(req, res) {
+export default defineEventHandler(async (event: any) => {
   processReacurring();
-  //return res.send("Done");
-}
+  return {
+    status: "OK",
+  };
+});
