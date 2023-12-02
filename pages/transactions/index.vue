@@ -26,7 +26,7 @@
         </div>
       </template>
       <template #account-data="{ row }">
-        <span>{{ row.account.name }}</span>
+        <span>{{ row.account?.name }}</span>
       </template>
       <template #date-data="{ row }">
         <span>{{ $dayjs(row.date).format("DD/MM/YYYY") }}</span>

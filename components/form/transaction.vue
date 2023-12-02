@@ -144,7 +144,7 @@ function add(accountId: number, accountLabel: string) {
 
 function edit(transaction: any) {
   state.value.id = transaction.id;
-  if (transaction.account) {
+  if (transaction.account.id) {
     selectedAccount.value = {
       id: transaction.account.id,
       label: transaction.account.name,
