@@ -15,12 +15,15 @@
           </div>
 
           <div class="w-96">
-            <span class="text-xl leading-7 block">{{
-              transaction.description
-            }}</span>
-            <span class="text-sm text-gray-400">{{
-              transaction.account?.name
-            }}</span>
+            <span class="text-xl leading-7 block"
+              >{{ transaction.description }}
+              <UBadge v-if="transaction.reacurring" variant="outline">
+                <UIcon name="i-heroicons-outline-refresh" dynamic />
+              </UBadge>
+            </span>
+            <span class="text-sm text-gray-400">
+              {{ transaction.account?.name }}
+            </span>
           </div>
 
           <div class="flex self-center text-end">

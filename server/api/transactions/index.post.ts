@@ -7,14 +7,23 @@ import {
 export default defineEventHandler(async (event: any) => {
   console.log("transaction post event");
 
-  const { id, person, account, date, amount, description } = await readBody(
-    event
-  );
+  const {
+    id,
+    person,
+    account,
+    date,
+    amount,
+    description,
+    reacurring,
+    parcels,
+  } = await readBody(event);
 
   var data: Transaction = {
     amount: parseFloat(amount),
     date,
     description,
+    reacurring,
+    parcels,
   };
 
   if (id) {
