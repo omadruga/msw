@@ -28,9 +28,6 @@
       <template #account-data="{ row }">
         <span>{{ row.account.name }}</span>
       </template>
-      <template #person-data="{ row }">
-        <span>{{ row.buyer.name }}</span>
-      </template>
       <template #date-data="{ row }">
         <span>{{ $dayjs(row.date).format("DD/MM/YYYY") }}</span>
       </template>

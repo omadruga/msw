@@ -12,17 +12,6 @@
         <h2>Adicionar Transação</h2>
       </template>
       <UForm :validate="validate" :state="state" @submit="save">
-        <UFormGroup label="Pessoa" name="person" class="mb-4">
-          <USelectMenu
-            v-model="selectedPerson"
-            :searchable="searchPerson"
-            searchable-placeholder="Pesquisar Pessoa"
-          >
-            <template #label>
-              {{ selectedPerson.label }}
-            </template>
-          </USelectMenu>
-        </UFormGroup>
         <UFormGroup label="Conta" name="account" class="mb-4">
           <USelectMenu
             v-model="selectedAccount"
@@ -59,6 +48,14 @@
             class="mb-4 flex-1"
           >
             <UInput v-model="state.parcels" />
+          </UFormGroup>
+          <UFormGroup
+            v-if="state.reacurring"
+            label="Atual"
+            name="currentParcel"
+            class="mb-4 flex-1"
+          >
+            <UInput v-model="state.currentParcel" />
           </UFormGroup>
         </div>
 
@@ -98,21 +95,7 @@ const searchAccount = async (q: any) => {
     });
 };
 const selectedAccount = ref({});
-const searchPerson = async (q: any) => {
-  const persons = await $fetch("/api/persons", { params: { q } });
-  return persons
-    .map((person: { id: any; name: string }) => ({
-      id: person.id,
-      label: person.name,
-    }))
-    .filter(Boolean)
-    .sort((a, b) => {
-      if (a.label.toLowerCase() > b.label.toLowerCase()) return 1;
-      else if (a.label.toLowerCase() < b.label.toLowerCase()) return -1;
-      else return 0;
-    });
-};
-const selectedPerson = ref({});
+
 const state = ref({
   id: undefined,
   date: undefined,
@@ -120,13 +103,12 @@ const state = ref({
   reacurring: false,
   parcels: undefined,
   description: undefined,
+  currentParcel: undefined,
 });
 const validate = (state: any): FormError[] => {
   const errors: FormError[] = [];
   if (!selectedAccount?.value?.id)
     errors.push({ path: "account", message: "Selecione uma Conta" });
-  if (!selectedPerson?.value?.id)
-    errors.push({ path: "person", message: "Selecione uma Pessoa" });
   if (!state.date)
     errors.push({ path: "date", message: "Informe a Data da Transação" });
   if (!state.amount)
@@ -144,46 +126,36 @@ const validate = (state: any): FormError[] => {
   return errors;
 };
 
-function add(
-  personId: number,
-  personLabel: string,
-  accountId: number,
-  accountLabel: string
-) {
+function add(accountId: number, accountLabel: string) {
   state.value.id = undefined;
   if (accountId) {
     selectedAccount.value = { label: accountLabel, id: accountId };
   } else {
     selectedAccount.value = { label: "Selecione...", id: 0 };
   }
-  if (personId) {
-    selectedPerson.value = { label: personLabel, id: personId };
-  } else {
-    selectedPerson.value = { label: "Selecione...", id: 0 };
-  }
   state.value.date = new Date();
   state.value.amount = undefined;
   state.value.description = undefined;
   state.value.reacurring = false;
   state.value.parcels = undefined;
+  state.value.currentParcel = undefined;
   isOpen.value = true;
 }
 
-function edit(row: any) {
-  state.value.id = row.id;
-  selectedAccount.value = {
-    id: row.account.id,
-    label: row.account.name,
-  };
-  selectedPerson.value = {
-    id: row.person.id,
-    label: row.person.name,
-  };
-  state.value.date = row.date;
-  state.value.amount = row.amount;
-  state.value.description = row.description;
-  state.value.reacurring = row.reaccuring;
-  state.value.parcels = row.parcels;
+function edit(transaction: any) {
+  state.value.id = transaction.id;
+  if (transaction.account) {
+    selectedAccount.value = {
+      id: transaction.account.id,
+      label: transaction.account.name,
+    };
+  }
+  state.value.date = transaction.date;
+  state.value.amount = transaction.amount;
+  state.value.description = transaction.description;
+  state.value.reacurring = transaction.reacurring;
+  state.value.parcels = transaction.parcels;
+  state.value.currentParcel = transaction.currentParcel;
   isOpen.value = true;
 }
 
@@ -193,7 +165,6 @@ async function save(event: FormSubmitEvent<any>) {
     method: "POST",
     body: JSON.stringify({
       id: state.value.id,
-      person: selectedPerson.value.id,
       account: selectedAccount.value.id,
       date: state.value.date,
       amount: state.value.amount,

@@ -7,12 +7,12 @@ export async function getTransactions(where) {
       include: {
         person: {
           select: {
+            id: true,
             name: true,
           },
         },
       },
     },
-    buyer: true,
   };
   if (where) {
     return await prisma.Transaction.findMany({
@@ -27,9 +27,8 @@ export async function getTransactions(where) {
   });
 }
 
-export async function createTransaction(data, account, person) {
+export async function createTransaction(data, account) {
   data.account = { connect: { id: account } };
-  data.buyer = { connect: { id: person } };
 
   try {
     const result = await prisma.Transaction.create({
@@ -50,9 +49,8 @@ export async function createTransaction(data, account, person) {
   }
 }
 
-export async function updateTransaction(id, data, account, person) {
+export async function updateTransaction(id, data, account) {
   data.account = { connect: { id: account } };
-  data.buyer = { connect: { id: person } };
 
   try {
     const result = await prisma.Transaction.update({
@@ -197,7 +195,6 @@ export async function processReacurring() {
   transactions.forEach((t) => {
     let newT = {};
     newT.accountId = t.accountId;
-    newT.buyerId = t.buyerId;
     newT.amount = t.amount;
     newT.description = t.description;
     newT.reacurring = t.reacurring;

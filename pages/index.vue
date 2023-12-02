@@ -41,12 +41,27 @@
             <span
               class="text-xl"
               :class="`${
-                transaction.buyerId == 1 ? 'text-green-500' : 'text-red-400'
+                transaction.account.personId == 1
+                  ? 'text-green-500'
+                  : 'text-red-400'
               }`"
             >
-              R$ {{ transaction.amount.toFixed(2) }}
+              {{ transaction.amount.toFixed(2) }}
             </span>
-            <UCheckbox class="self-center pl-4" />
+            <UButtonGroup class="self-center pl-2">
+              <UButton
+                color="red"
+                variant="soft"
+                icon="i-heroicons-trash"
+                @click="del(transaction.id)"
+              ></UButton>
+              <UButton
+                @click="formTransaction?.edit(transaction)"
+                icon="i-heroicons-pencil-square"
+                trailing
+              ></UButton>
+            </UButtonGroup>
+            <UCheckbox class="self-center pl-2" />
           </div>
         </div>
         <UDivider class="py-2" color="gray" />
@@ -74,6 +89,7 @@
   <FormPayoff ref="formPayoff" @refresh="refresh" />
 </template>
 <script setup>
+const toast = useToast();
 const { pending, data: transactions } = await useLazyAsyncData(
   "transactions",
   () => {
@@ -92,5 +108,30 @@ const formPayoff = ref();
 async function refresh() {
   await refreshNuxtData("transactions");
   await refreshNuxtData("projections");
+}
+
+async function del(id) {
+  if (confirm("Excluir Transação?")) {
+    const { data: result, error } = await useFetch("/api/transactions", {
+      method: "DELETE",
+      body: JSON.stringify({
+        id: id,
+      }),
+    });
+    if (!error.value) {
+      toast.add({
+        title: "Transação excluída com sucesso",
+        icon: "i-heroicons-check-circle",
+      });
+      refresh();
+    } else {
+      toast.add({
+        title: "Erro ao excluir Transação.",
+        description: error.value.message + "(" + error.value.statusCode + ")",
+        icon: "i-heroicons-x-circle",
+        color: "red",
+      });
+    }
+  }
 }
 </script>
