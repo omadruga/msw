@@ -23,13 +23,13 @@ export default defineEventHandler(async (event: any) => {
     date,
     description,
     reacurring,
-    parcels,
+    parcels: parseInt(parcels),
   };
 
   if (id) {
-    return updateTransaction(id, data, account, person);
+    return updateTransaction(id, data, account);
   }
 
   data.currentParcel = 1;
-  return createTransaction(data, account, person);
+  return createTransaction(data, account);
 });
