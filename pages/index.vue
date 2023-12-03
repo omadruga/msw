@@ -4,7 +4,10 @@
 
     <div class="w-2/3 p-4 shadow-md">
       <div v-for="transaction in transactions">
-        <div class="flex justify-start">
+        <div
+          v-if="$dayjs(transaction.date).isBefore($dayjs().add(2, 'days'))"
+          class="flex justify-start"
+        >
           <!-- date -->
           <div class="text-center self-end min-w-fit pr-4">
             <span class="uppercase leading-3 text-sm text-gray-400 block"
@@ -64,7 +67,11 @@
             <UCheckbox class="self-center pl-2" />
           </div>
         </div>
-        <UDivider class="py-2" color="gray" />
+        <UDivider
+          v-if="$dayjs(transaction.date).isBefore($dayjs().add(2, 'days'))"
+          class="py-2"
+          color="gray"
+        />
       </div>
     </div>
 
