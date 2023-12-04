@@ -124,6 +124,14 @@
           <div class="w-96">
             <span class="text-sm leading-5 block text-gray-400"
               >{{ transaction.description }}
+              <UBadge v-if="transaction.reacurring" variant="soft" size="xs">
+                <span v-if="transaction.parcels > 0">
+                  {{ transaction.currentParcel }} / {{ transaction.parcels }}
+                </span>
+                <span v-else>
+                  <UIcon name="i-heroicons-outline-refresh" dynamic />
+                </span>
+              </UBadge>
             </span>
           </div>
 
