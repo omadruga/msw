@@ -160,7 +160,6 @@ function edit(transaction: any) {
 }
 
 async function save(event: FormSubmitEvent<any>) {
-  console.log("transaction save");
   const { data: result, error } = useFetch("/api/transactions", {
     method: "POST",
     body: JSON.stringify({

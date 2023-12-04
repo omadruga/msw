@@ -185,12 +185,6 @@ const appendTransactions = (newTransactions) => {
   });
 };
 
-//const { pending, data: transactions } = await useLazyAsyncData(
-//  "transactions",
-//  () => {
-//    return $fetch("/api/");
-//  }
-//);
 const { data: projections } = await useLazyAsyncData("projections", () => {
   return $fetch("/api/transactions/projection");
 });
@@ -198,8 +192,10 @@ const { data: projections } = await useLazyAsyncData("projections", () => {
 const formTransaction = ref();
 const formPayoff = ref();
 async function refresh() {
-  await refreshNuxtData("transactions");
   await refreshNuxtData("projections");
+  transactions.value = [];
+  page.value = 1;
+  loadTransactions();
 }
 
 async function del(id) {
@@ -234,7 +230,6 @@ const totalReacurring = computed(() => {
         (t) => t.reacurring && dayjs(t.date).isAfter(dayjs().startOf("month"))
       )
       .reduce((sum, t) => sum + t.amount, 0);
-    console.log(sum);
     return sum;
   }
   return 0;

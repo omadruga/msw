@@ -2,8 +2,6 @@ import { Transaction } from "@prisma/client";
 import { createPayoff, updatePayoff } from "../../data/transactions.js";
 
 export default defineEventHandler(async (event: any) => {
-  console.log("transaction post event");
-
   const { id, date, amount } = await readBody(event);
 
   var data: Transaction = {

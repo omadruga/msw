@@ -5,8 +5,6 @@ import {
 } from "../../data/transactions.js";
 
 export default defineEventHandler(async (event: any) => {
-  console.log("transaction post event");
-
   const { id, account, date, amount, description, reacurring, parcels } =
     await readBody(event);
 

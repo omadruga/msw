@@ -75,7 +75,6 @@ function edit(row: any) {
 }
 
 async function save(event: FormSubmitEvent<any>) {
-  console.log("payoff save");
   const { data: result, error } = useFetch("/api/transactions/payoff", {
     method: "POST",
     body: JSON.stringify({
