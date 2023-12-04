@@ -73,6 +73,17 @@
           color="gray"
         />
       </div>
+
+      <div class="flex justify-center mb-8">
+        <div v-if="pending">Carregando...</div>
+        <UButton
+          v-else
+          @click="loadMore()"
+          icon="i-heroicons-arrow-down-tray"
+          trailing
+          >Carregar Mais</UButton
+        >
+      </div>
     </div>
 
     <div class="w-1/4 bg-slate-900 p-4">
@@ -135,18 +146,46 @@
 <script setup>
 const toast = useToast();
 const dayjs = useDayjs();
-const { pending, data: transactions } = await useLazyAsyncData(
-  "transactions",
-  () => {
-    return $fetch("/api/");
-  }
-);
-const { pendingProjection, data: projections } = await useLazyAsyncData(
-  "projections",
-  () => {
-    return $fetch("/api/transactions/projection");
-  }
-);
+
+const page = ref(1);
+const transactions = ref([]);
+const pending = ref(true);
+
+onMounted(() => loadTransactions());
+
+const loadMore = () => {
+  page.value++;
+  loadTransactions();
+};
+
+const loadTransactions = () => {
+  pending.value = true;
+  $fetch(`/api/`, {
+    method: "GET",
+    params: {
+      page: page.value,
+    },
+  }).then(function (transactions) {
+    appendTransactions(transactions.data);
+    pending.value = false;
+  });
+};
+
+const appendTransactions = (newTransactions) => {
+  newTransactions.forEach((transaction) => {
+    transactions.value.push(transaction);
+  });
+};
+
+//const { pending, data: transactions } = await useLazyAsyncData(
+//  "transactions",
+//  () => {
+//    return $fetch("/api/");
+//  }
+//);
+const { data: projections } = await useLazyAsyncData("projections", () => {
+  return $fetch("/api/transactions/projection");
+});
 
 const formTransaction = ref();
 const formPayoff = ref();
