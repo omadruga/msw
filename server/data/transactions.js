@@ -23,7 +23,7 @@ export async function getTransactions(where) {
   }
   return await prisma.Transaction.findMany({
     include,
-    orderBy: [{ date: "desc" }],
+    orderBy: [{ date: "desc", amount: "desc" }],
   });
 }
 
