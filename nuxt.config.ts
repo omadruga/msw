@@ -27,4 +27,9 @@ export default defineNuxtConfig({
     ],
     defaultTimezone: "America/Sao_Paulo",
   },
+  app: {
+    head: {
+      title: "My Split Wise",
+    },
+  },
 });
