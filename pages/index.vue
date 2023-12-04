@@ -76,6 +76,7 @@
     </div>
 
     <div class="w-1/4 bg-slate-900 p-4">
+      <UDivider label="AÇÕES" class="pb-4" />
       <CrudAddButton
         @add="formTransaction?.add"
         title="Cadastrar Transação"
@@ -86,8 +87,44 @@
         title="Quitar contas"
         class="mb-2 w-full justify-center"
       />
+
+      <UDivider label="TOTAL" class="py-4" />
       <div v-for="projection in projections">
         {{ projection.person }}: R$ {{ projection.total.toFixed(2) }}
+      </div>
+
+      <UDivider label="RECORRÊNCIAS DO MÊS" class="py-4" />
+      <div v-for="transaction in transactions">
+        <div
+          v-if="
+            transaction.reacurring &&
+            $dayjs(transaction.date).isAfter($dayjs().startOf('month'))
+          "
+          class="flex justify-start"
+        >
+          <!-- date -->
+          <div class="text-center self-end min-w-fit pr-4">
+            <span class="text-gray-400">
+              {{ $dayjs(transaction.date).add(1, "day").format("DD") }}
+            </span>
+          </div>
+
+          <!-- description -->
+          <div class="w-96">
+            <span class="text-sm leading-5 block text-gray-400"
+              >{{ transaction.description }}
+            </span>
+          </div>
+
+          <!-- amount -->
+          <div class="flex self-center text-end ml-auto text-sm text-gray-400">
+            {{ transaction.amount.toFixed(2) }}
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-between">
+        <span>Total</span>
+        <span>R$ {{ totalReacurring.toFixed(2) }}</span>
       </div>
     </div>
   </div>
@@ -97,6 +134,7 @@
 </template>
 <script setup>
 const toast = useToast();
+const dayjs = useDayjs();
 const { pending, data: transactions } = await useLazyAsyncData(
   "transactions",
   () => {
@@ -141,4 +179,17 @@ async function del(id) {
     }
   }
 }
+
+const totalReacurring = computed(() => {
+  if (transactions?.value) {
+    let sum = transactions.value
+      .filter(
+        (t) => t.reacurring && dayjs(t.date).isAfter(dayjs().startOf("month"))
+      )
+      .reduce((sum, t) => sum + t.amount, 0);
+    console.log(sum);
+    return sum;
+  }
+  return 0;
+});
 </script>
