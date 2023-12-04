@@ -103,7 +103,7 @@
           class="flex justify-start"
         >
           <!-- date -->
-          <div class="text-center self-end min-w-fit pr-4">
+          <div class="text-center text-sm self-end min-w-fit pr-4">
             <span class="text-gray-400">
               {{ $dayjs(transaction.date).add(1, "day").format("DD") }}
             </span>
