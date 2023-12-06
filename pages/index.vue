@@ -109,7 +109,9 @@
         <div
           v-if="
             transaction.reacurring &&
-            $dayjs(transaction.date).isAfter($dayjs().startOf('month'))
+            $dayjs(transaction.date).isAfter(
+              $dayjs().startOf('month').subtract(1, 'day')
+            )
           "
           class="flex justify-start"
         >
@@ -227,9 +229,12 @@ const totalReacurring = computed(() => {
   if (transactions?.value) {
     let sum = transactions.value
       .filter(
-        (t) => t.reacurring && dayjs(t.date).isAfter(dayjs().startOf("month"))
+        (t) =>
+          t.reacurring &&
+          dayjs(t.date).isAfter(dayjs().startOf("month").subtract(1, "day"))
       )
       .reduce((sum, t) => sum + t.amount, 0);
+
     return sum;
   }
   return 0;
