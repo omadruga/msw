@@ -113,34 +113,47 @@
               $dayjs().startOf('month').subtract(1, 'day')
             )
           "
-          class="flex justify-start"
         >
-          <!-- date -->
-          <div class="text-center text-sm self-end min-w-fit pr-4">
-            <span class="text-gray-400">
-              {{ $dayjs(transaction.date).add(1, "day").format("DD") }}
-            </span>
+          <div class="flex justify-start">
+            <!-- date -->
+            <div class="text-center text-sm self-end min-w-fit pr-4">
+              <span class="text-gray-400">
+                {{ $dayjs(transaction.date).add(1, "day").format("DD") }}
+              </span>
+            </div>
+
+            <!-- description -->
+            <div class="w-96">
+              <span class="text-sm leading-5 block text-gray-400"
+                >{{ transaction.description }}
+                <UBadge v-if="transaction.reacurring" variant="soft" size="xs">
+                  <span v-if="transaction.parcels > 0">
+                    {{ transaction.currentParcel }} / {{ transaction.parcels }}
+                  </span>
+                  <span v-else>
+                    <UIcon name="i-heroicons-outline-refresh" dynamic />
+                  </span>
+                </UBadge>
+              </span>
+            </div>
+
+            <!-- amount -->
+            <div
+              class="flex self-center text-end ml-auto text-sm text-gray-400"
+            >
+              {{ transaction.amount.toFixed(2) }}
+            </div>
           </div>
 
-          <!-- description -->
-          <div class="w-96">
-            <span class="text-sm leading-5 block text-gray-400"
-              >{{ transaction.description }}
-              <UBadge v-if="transaction.reacurring" variant="soft" size="xs">
-                <span v-if="transaction.parcels > 0">
-                  {{ transaction.currentParcel }} / {{ transaction.parcels }}
-                </span>
-                <span v-else>
-                  <UIcon name="i-heroicons-outline-refresh" dynamic />
-                </span>
-              </UBadge>
-            </span>
-          </div>
-
-          <!-- amount -->
-          <div class="flex self-center text-end ml-auto text-sm text-gray-400">
-            {{ transaction.amount.toFixed(2) }}
-          </div>
+          <UMeter
+            v-if="transaction.parcels > 0"
+            size="2xs"
+            :indicator="false"
+            color="teal"
+            :value="`${
+              (transaction.currentParcel / transaction.parcels) * 100
+            }`"
+          />
         </div>
       </div>
       <div class="flex justify-between">
