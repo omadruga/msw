@@ -51,19 +51,21 @@
             >
               {{ transaction.amount.toFixed(2) }}
             </span>
-            <UButtonGroup class="self-center pl-2">
-              <UButton
-                color="red"
-                variant="soft"
-                icon="i-heroicons-trash"
-                @click="del(transaction.id)"
-              ></UButton>
-              <UButton
-                @click="formTransaction?.edit(transaction)"
-                icon="i-heroicons-pencil-square"
-                trailing
-              ></UButton>
-            </UButtonGroup>
+            <div v-if="loggedIn">
+              <UButtonGroup class="self-center pl-2">
+                <UButton
+                  color="red"
+                  variant="soft"
+                  icon="i-heroicons-trash"
+                  @click="del(transaction.id)"
+                ></UButton>
+                <UButton
+                  @click="formTransaction?.edit(transaction)"
+                  icon="i-heroicons-pencil-square"
+                  trailing
+                ></UButton>
+              </UButtonGroup>
+            </div>
             <UCheckbox class="self-center pl-2" />
           </div>
         </div>
@@ -87,17 +89,19 @@
     </div>
 
     <div class="w-1/4 bg-slate-900 p-4">
-      <UDivider label="AÇÕES" class="pb-4" />
-      <CrudAddButton
-        @add="formTransaction?.add"
-        title="Cadastrar Transação"
-        class="mb-2 w-full justify-center"
-      />
-      <CrudAddButton
-        @add="formPayoff?.add"
-        title="Quitar contas"
-        class="mb-2 w-full justify-center"
-      />
+      <div v-if="loggedIn">
+        <UDivider label="AÇÕES" class="pb-4" />
+        <CrudAddButton
+          @add="formTransaction?.add"
+          title="Cadastrar Transação"
+          class="mb-2 w-full justify-center"
+        />
+        <CrudAddButton
+          @add="formPayoff?.add"
+          title="Quitar contas"
+          class="mb-2 w-full justify-center"
+        />
+      </div>
 
       <UDivider label="TOTAL" class="py-4" />
       <div v-for="projection in projections">
@@ -163,10 +167,11 @@
     </div>
   </div>
 
-  <FormTransaction ref="formTransaction" @refresh="refresh" />
-  <FormPayoff ref="formPayoff" @refresh="refresh" />
+  <FormTransaction v-if="loggedIn" ref="formTransaction" @refresh="refresh" />
+  <FormPayoff v-if="loggedIn" ref="formPayoff" @refresh="refresh" />
 </template>
 <script setup>
+const { loggedIn, user, session, clear } = useUserSession();
 const toast = useToast();
 const dayjs = useDayjs();
 

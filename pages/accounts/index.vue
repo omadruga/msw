@@ -19,6 +19,7 @@
       <template #actions-data="{ row }">
         <UButtonGroup>
           <UButton
+            v-if="loggedIn"
             color="red"
             variant="soft"
             icon="i-heroicons-trash"
@@ -26,6 +27,7 @@
             >Excluir</UButton
           >
           <UButton
+            v-if="loggedIn"
             @click="form?.edit(row.id, row.person, row.name)"
             icon="i-heroicons-pencil-square"
             trailing
@@ -34,10 +36,11 @@
         </UButtonGroup>
       </template>
     </UTable>
-    <FormAccount ref="form" @refresh="refresh" />
+    <FormAccount v-if="loggedIn" ref="form" @refresh="refresh" />
   </div>
 </template>
 <script setup lang="ts">
+const { loggedIn, user, session, clear } = useUserSession();
 const toast = useToast();
 const form = ref();
 

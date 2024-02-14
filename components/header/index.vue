@@ -56,7 +56,7 @@
           class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
         >
           <!-- Profile dropdown -->
-          <Menu as="div" class="relative ml-3">
+          <Menu v-if="loggedIn" as="div" class="relative ml-3">
             <div>
               <MenuButton
                 class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -114,6 +114,13 @@
               </MenuItems>
             </transition>
           </Menu>
+          <UButton
+            v-else
+            to="/api/auth/github"
+            label="Login with GitHub"
+            color="black"
+            external
+          />
         </div>
       </div>
     </div>
@@ -148,6 +155,7 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/vue";
+const { loggedIn, user, session, clear } = useUserSession();
 const route = useRoute();
 const navigation = [
   { name: "DASHBOARD", href: "/", current: route.name == "" },
