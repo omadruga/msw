@@ -17,6 +17,9 @@ dependencies:
   '@prisma/extension-accelerate':
     specifier: ^0.6.3
     version: 0.6.3(@prisma/client@5.9.1)
+  nuxt-gravatar:
+    specifier: ^1.1.0
+    version: 1.1.0
   v-calendar:
     specifier: ^3.1.2
     version: 3.1.2(@popperjs/core@2.11.8)(vue@3.4.19)
@@ -4555,6 +4558,12 @@ packages:
       - rollup
       - supports-color
     dev: true
+
+  /nuxt-gravatar@1.1.0:
+    resolution: {integrity: sha512-1A+LQX2lZaNLqiBTL497IwbwIYnoQvX6av/bL7DaVnHddpFvQOo+tbFpttUBaz+gmHjX+FOX1pVuZKgt2v8lWg==}
+    dependencies:
+      '@vue/reactivity': 3.4.19
+    dev: false
 
   /nuxt-icon@0.6.8(nuxt@3.10.1)(vite@5.1.1)(vue@3.4.19):
     resolution: {integrity: sha512-6eWlNOb6Uvp63uXFdhcmsB1JlubDv76Pot/VwmIu0yJxDYhwytbnv3WAjw2khl2l7W/65V4eMGIEeX9C5Ahxng==}

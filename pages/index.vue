@@ -106,9 +106,9 @@
         {{ projection.person }}: R$ {{ projection.total.toFixed(2) }}
       </div>
 
-      <UDivider label="RECORRÊNCIAS DO MÊS" class="py-4" />
+      <UDivider label="RECORRÊNCIAS DO MÊS" class="py-2" />
+      <UDivider label="Recorrências Eternas" class="py-2" />
       <div v-for="transaction in transactions">
-        <UDivider label="Recorrências Eternas" class="py-4" />
         <div
           v-if="
             transaction.reacurring &&
@@ -159,12 +159,17 @@
             }`"
           />
         </div>
-
-        <UDivider label="Recorrências Parceladas" class="py-4" />
+      </div>
+      <div class="flex justify-between pt-2">
+        <span>Total Eternas</span>
+        <span>R$ {{ total.eternal.toFixed(2) }}</span>
+      </div>
+      <UDivider label="Recorrências Parceladas" class="py-2" />
+      <div v-for="transaction in transactions">
         <div
           v-if="
             transaction.reacurring &&
-            transacation.parcels >= 0 &&
+            transaction.parcels >= 0 &&
             $dayjs(transaction.date).isAfter(
               $dayjs().startOf('month').subtract(1, 'day')
             )
@@ -212,9 +217,13 @@
           />
         </div>
       </div>
-      <div class="flex justify-between">
-        <span>Total</span>
-        <span>R$ {{ totalReacurring.toFixed(2) }}</span>
+      <div class="flex justify-between pt-2">
+        <span>Total Parceladas</span>
+        <span>R$ {{ total.parcels.toFixed(2) }}</span>
+      </div>
+      <div class="flex justify-between pt-2">
+        <span>Total Geral</span>
+        <span>R$ {{ (total.eternal + total.parcels).toFixed(2) }}</span>
       </div>
     </div>
   </div>
@@ -295,18 +304,24 @@ async function del(id) {
   }
 }
 
-const totalReacurring = computed(() => {
-  if (transactions?.value) {
-    let sum = transactions.value
-      .filter(
-        (t) =>
-          t.reacurring &&
-          dayjs(t.date).isAfter(dayjs().startOf("month").subtract(1, "day"))
-      )
-      .reduce((sum, t) => sum + t.amount, 0);
+const total = computed(() => {
+  let eternal = 0;
+  let parcels = 0;
+  let dayOne = dayjs().startOf("month").subtract(1, "day");
 
-    return sum;
+  for (let i = 0; i < transactions.value.length; i++) {
+    let t = transactions.value[i];
+    if (t.reacurring && dayjs(t.date).isAfter(dayOne)) {
+      if (t.parcels == -1) {
+        eternal += t.amount;
+      } else {
+        parcels += t.amount;
+      }
+    }
   }
-  return 0;
+  return {
+    eternal,
+    parcels,
+  };
 });
 </script>
