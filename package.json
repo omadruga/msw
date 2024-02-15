@@ -7,7 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "prisma generate && prisma migrate deploy && nuxt prepare"
+    "postinstall": "prisma generate --no-engine && prisma migrate deploy && nuxt prepare"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
@@ -23,6 +23,8 @@
     "@popperjs/core": "^2.11.8",
     "@prisma/client": "5.9.1",
     "@prisma/extension-accelerate": "^0.6.3",
+    "@sentry/vite-plugin": "^2.14.0",
+    "@sentry/vue": "^7.101.0",
     "nuxt-gravatar": "^1.1.0",
     "v-calendar": "^3.1.2"
   },
